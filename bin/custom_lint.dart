@@ -143,9 +143,12 @@ class _GrabLint extends PluginBase {
         ? null
         : Lint(
             code: 'grab_used_in_function',
-            message: 'Extension method of Grab should be used only in '
-                'the build method of a class with a StatelessGrabMixin '
-                '/ StatefulGrabMixin (or Grab / Grabful) mixin.',
+            message: 'Extension methods of Grab are only available in '
+                'the build method of either of the followings:\n'
+                '* A StatelessWidget with the StatelessGrabMixin / Grab '
+                'mixin\n'
+                '* The State class associated with a StatefulWidget with '
+                'the StatefulGrabMixin / Grabful mixin',
             location: result.lintLocationFromOffset(
               invocation.offset,
               length: invocation.length,
@@ -164,10 +167,8 @@ class _GrabLint extends PluginBase {
         ? null
         : Lint(
             code: 'grab_used_too_deep',
-            message: 'Extension method of Grab should be used only at '
-                'the top level of the build method, and the class must '
-                'have a StatelessGrabMixin / StatefulGrabMixin (or Grab '
-                '/ Grabful) mixin.',
+            message: 'Extension methods of Grab are only available at '
+                'the top level of the build method.',
             location: result.lintLocationFromOffset(
               invocation.offset,
               length: invocation.length,
@@ -198,9 +199,12 @@ class _GrabLint extends PluginBase {
         ? null
         : Lint(
             code: 'no_grab_mixin',
-            message: 'Extension method of Grab must be used in the '
-                'build method of a class with a StatelessGrabMixin / '
-                'StatefulGrabMixin (or Grab / Grabful) mixin.',
+            message: 'Extension methods of Grab are only available in '
+                'the build method of either of the followings:\n'
+                '* A StatelessWidget with the StatelessGrabMixin / Grab '
+                'mixin\n'
+                '* The State class associated with a StatefulWidget with '
+                'the StatefulGrabMixin / Grabful mixin',
             location: result.lintLocationFromOffset(
               invocation.offset,
               length: invocation.length,
