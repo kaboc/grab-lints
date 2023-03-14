@@ -1,0 +1,26 @@
+name: grab_lints_example
+description: A new Flutter project.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=2.19.0 <3.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  grab: ^0.3.0+1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^2.0.1
+
+  custom_lint: ^0.3.2
+  grab_lints:
+    path: ../
+
+flutter:
+  uses-material-design: true

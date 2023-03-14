@@ -1,14 +1,14 @@
 name: grab_lints
 description: A Dart analyzer plugin to add lint rules for Grab.
-version: 0.0.1
+version: 0.1.0
 publish_to: none
 
 environment:
-  sdk: '>=2.17.0 <3.0.0'
+  sdk: '>=2.19.0 <3.0.0'
 
 dependencies:
-  analyzer: ^4.7.0
-  custom_lint_builder: ^0.0.12
+  analyzer: ^5.7.1
+  custom_lint_builder: ^0.3.2
 
 dependency_overrides:
   lints: ^2.0.1
