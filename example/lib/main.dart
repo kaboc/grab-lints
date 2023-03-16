@@ -1,4 +1,4 @@
-// ignore_for_file: invalid_override, mixin_application_not_implemented_interface, non_abstract_class_inherits_abstract_member
+// ignore_for_file: avoid_single_cascade_in_expression_statements, invalid_override, mixin_application_not_implemented_interface, non_abstract_class_inherits_abstract_member
 
 //==================================================================
 // Lint warnings are being suppressed with `expect_lint` comments.
@@ -46,6 +46,16 @@ class _MyStatelessWidget1 extends StatelessWidget {
     // Either Grab or StatelessGrabMixin is necessary.
     // expect_lint: missing_grab_mixin
     final count = context.grab(notifier);
+
+    // Works for a call with cascade notation.
+    // expect_lint: missing_grab_mixin
+    context..grab(notifier);
+
+    final ctx = context;
+
+    // Works for a call using a name other than context.
+    // expect_lint: missing_grab_mixin
+    ctx.grab(notifier);
 
     return Center(
       child: Text('$count'),
