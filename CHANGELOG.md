@@ -1,3 +1,8 @@
+## 0.1.1
+
+- Fix `avoid_grab_in_callback` to not warn about use of grab outside a callback.
+- Improve example and README.
+
 ## 0.1.0
 
 - Require Dart SDK 2.19.

@@ -24,7 +24,9 @@ This plugin uses [custom_lint](https://pub.dev/packages/custom_lint).
 ```yaml
 dev_dependencies:
   custom_lint: ^x.x.x
-  grab_lints: ^x.x.x
+  grab_lints:
+    git:
+      url: https://github.com/kaboc/grab-lints
 ```
 
 ### analysis_options.yaml
