@@ -117,7 +117,6 @@ extension MethodInvocationExtension on MethodInvocation {
   }
 
   bool get isInCallback {
-    return thisOrAncestorOfType<InstanceCreationExpression>() != null ||
-        thisOrAncestorOfType<FunctionExpression>() != null;
+    return thisOrAncestorOfType<FunctionExpression>() != null;
   }
 }

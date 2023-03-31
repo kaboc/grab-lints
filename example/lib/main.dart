@@ -25,6 +25,7 @@ class App extends StatelessWidget with Grab {
           children: const [
             _MyStatelessWidget1(),
             _MyStatelessWidget2(),
+            _MyStatelessWidget3(),
             _MyStatefulWidget1(),
             _MyStatefulWidget2(),
           ],
@@ -38,8 +39,39 @@ class App extends StatelessWidget with Grab {
   }
 }
 
-class _MyStatelessWidget1 extends StatelessWidget {
+class _MyStatelessWidget1 extends StatelessWidget with Grab {
   const _MyStatelessWidget1();
+
+  @override
+  Widget build(BuildContext context) {
+    // Using grab in an if expression or a block is fine.
+    if (context.grab(notifier).isEven) {
+      context.grab(notifier);
+    }
+
+    return Center(
+      child: SizedBox.square(
+        dimension: 500.0,
+        child: Column(
+          children: [
+            Padding(
+              // Using grab in a deeply nested location is fine
+              // as long as it is not in a callback.
+              padding: EdgeInsets.all(context.grab(notifier)),
+              child: Text('${context.grab(notifier)}'),
+            ),
+            ...[
+              Text('${context.grab(notifier)}'),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _MyStatelessWidget2 extends StatelessWidget {
+  const _MyStatelessWidget2();
 
   @override
   Widget build(BuildContext context) {
@@ -64,8 +96,8 @@ class _MyStatelessWidget1 extends StatelessWidget {
 }
 
 // expect_lint: wrong_grab_mixin
-class _MyStatelessWidget2 extends StatelessWidget with Grabful {
-  const _MyStatelessWidget2();
+class _MyStatelessWidget3 extends StatelessWidget with Grabful {
+  const _MyStatelessWidget3();
 
   @override
   Widget build(BuildContext context) {
