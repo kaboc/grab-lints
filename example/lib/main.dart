@@ -1,9 +1,10 @@
 // ignore_for_file: avoid_single_cascade_in_expression_statements, invalid_override, mixin_application_not_implemented_interface, non_abstract_class_inherits_abstract_member
 
-//==================================================================
-// Lint warnings are being suppressed with `expect_lint` comments.
-// Try commenting out them to see that misuse is actually warned.
-//==================================================================
+//=========================================================
+// This file works as both a demonstration and tests.
+// Your editor shows no error if lint warnings are being
+// successfully suppressed by the `expect_lint` comments.
+//=========================================================
 
 import 'package:flutter/material.dart';
 import 'package:grab/grab.dart';
@@ -78,6 +79,10 @@ class _MyStatelessWidget2 extends StatelessWidget {
     // Either Grab or StatelessGrabMixin is necessary.
     // expect_lint: missing_grab_mixin
     final count = context.grab(notifier);
+
+    // Works for grabAt() too.
+    // expect_lint: missing_grab_mixin
+    context.grabAt(notifier, (int v) => v);
 
     // Works for a call with cascade notation.
     // expect_lint: missing_grab_mixin
