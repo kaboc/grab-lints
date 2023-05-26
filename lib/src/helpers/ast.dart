@@ -6,7 +6,7 @@ import 'utils.dart';
 part 'visitors.dart';
 
 extension ClassDeclarationExtension on ClassDeclaration {
-  String get _className => extendsClause?.superclass.name.name ?? '';
+  String get _className => extendsClause?.superclass.name2.lexeme ?? '';
 
   ClassType get classType {
     switch (_className) {
@@ -68,13 +68,12 @@ extension ClassDeclarationExtension on ClassDeclaration {
           return null;
         }
 
-        final name = expressions.first.constructorName.type.name.name;
-
         final visitor2 = _ClassDeclarationVisitor();
         parent?.visitChildren(visitor2);
 
-        return visitor2.declarations
-            .firstWhereOrNull((v) => v.name.lexeme == name);
+        return visitor2.declarations.firstWhereOrNull(
+          (v) => v.name == expressions.first.constructorName.type.name2,
+        );
       }
     }
     return null;
@@ -95,7 +94,7 @@ extension ClassDeclarationExtension on ClassDeclaration {
 
 extension WithClauseExtension on WithClause {
   List<String> get mixinNames {
-    return [for (final type in mixinTypes) type.name.name];
+    return [for (final type in mixinTypes) type.name2.lexeme];
   }
 }
 
