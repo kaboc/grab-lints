@@ -26,10 +26,9 @@ class WrongGrabMixin extends DartLintRule {
       }
 
       final classType = widgetDeclaration.classType;
-      final mixinNames = widgetDeclaration.mixinNames;
 
-      if (classType.isStateless && mixinNames.contains('StatefulGrabMixin') ||
-          classType.isStateful && mixinNames.contains('StatelessGrabMixin')) {
+      if (classType.isStateless && widgetDeclaration.hasStatefulMixin ||
+          classType.isStateful && widgetDeclaration.hasStatelessMixin) {
         reporter.reportErrorForNode(code, node);
       }
     });

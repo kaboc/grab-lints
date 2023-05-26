@@ -26,19 +26,16 @@ class UnnecessaryGrabMixin extends DartLintRule {
         return;
       }
 
-      final classType = widgetDeclaration.classType;
-      final mixinNames = widgetDeclaration.mixinNames;
-
-      if (!mixinNames.contains('StatelessGrabMixin') &&
-          !mixinNames.contains('StatefulGrabMixin')) {
+      if (!widgetDeclaration.hasStatelessMixin &&
+          !widgetDeclaration.hasStatefulMixin) {
         return;
       }
 
-      final hasGrabCall = classType.isStateless
+      final hasGrabCall = widgetDeclaration.classType.isStateless
           ? widgetDeclaration.hasGrabCall
           : widgetDeclaration.findStateClass()?.hasGrabCall;
 
-      if (hasGrabCall != null && !hasGrabCall) {
+      if (hasGrabCall == false) {
         reporter.reportErrorForNode(code, node);
       }
     });

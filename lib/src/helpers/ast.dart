@@ -5,6 +5,16 @@ import 'utils.dart';
 
 part 'visitors.dart';
 
+extension NullableClassDeclarationExtension on ClassDeclaration? {
+  bool get hasStatelessMixin {
+    return this?.mixinNames.contains('StatelessGrabMixin') ?? false;
+  }
+
+  bool get hasStatefulMixin {
+    return this?.mixinNames.contains('StatefulGrabMixin') ?? false;
+  }
+}
+
 extension ClassDeclarationExtension on ClassDeclaration {
   String get _className => extendsClause?.superclass.name2.lexeme ?? '';
 

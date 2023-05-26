@@ -33,10 +33,9 @@ class MissingGrabMixin extends DartLintRule {
       final widgetDeclaration = classType.isStateless
           ? classDeclaration
           : classDeclaration?.findStatelessWidget();
-      final mixinNames = widgetDeclaration?.mixinNames ?? [];
 
-      if (classType.isStateless && !mixinNames.contains('StatelessGrabMixin') ||
-          classType.isState && !mixinNames.contains('StatefulGrabMixin')) {
+      if (classType.isStateless && !widgetDeclaration.hasStatelessMixin ||
+          classType.isState && !widgetDeclaration.hasStatefulMixin) {
         reporter.reportErrorForNode(code, node);
       }
     });
