@@ -1,3 +1,10 @@
+## 0.2.0
+
+- Support grab 0.4.0.
+    - Support for older grab versions will be removed in the future.
+- Update dependencies.
+- Small refactorings.
+
 ## 0.1.1
 
 - Fix `avoid_grab_in_callback` to not warn about use of grab outside a callback.
