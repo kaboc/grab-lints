@@ -9,7 +9,27 @@
 import 'package:flutter/material.dart';
 import 'package:grab/grab.dart';
 
-final notifier = ValueNotifier(0);
+final valueNotifier = ValueNotifier(0);
+final changeNotifier1 = MyChangeNotifier1(0);
+final changeNotifier2 = MyChangeNotifier2(0);
+final changeNotifier3 = MyChangeNotifier3(0);
+final textController = TextEditingController();
+
+class MyChangeNotifier1 extends ChangeNotifier {
+  MyChangeNotifier1(this.value);
+
+  final int value;
+}
+
+class MyChangeNotifier2 extends MyChangeNotifier1 {
+  MyChangeNotifier2(super.value);
+}
+
+class MyChangeNotifier3 with ChangeNotifier {
+  MyChangeNotifier3(this.value);
+
+  final int value;
+}
 
 void main() => runApp(const App());
 
@@ -33,7 +53,7 @@ class App extends StatelessWidget with Grab {
         ),
         floatingActionButton: FloatingActionButton(
           child: const Icon(Icons.add),
-          onPressed: () => notifier.value++,
+          onPressed: () => valueNotifier.value++,
         ),
       ),
     );
@@ -46,8 +66,8 @@ class _MyStatelessWidget1 extends StatelessWidget with Grab {
   @override
   Widget build(BuildContext context) {
     // Using grab in an if expression or a block is fine.
-    if (context.grab(notifier).isEven) {
-      context.grab(notifier);
+    if (valueNotifier.grab(context).isEven) {
+      valueNotifier.grab(context);
     }
 
     return Center(
@@ -58,11 +78,11 @@ class _MyStatelessWidget1 extends StatelessWidget with Grab {
             Padding(
               // Using grab in a deeply nested location is fine
               // as long as it is not in a callback.
-              padding: EdgeInsets.all(context.grab(notifier)),
-              child: Text('${context.grab(notifier)}'),
+              padding: EdgeInsets.all(valueNotifier.grab(context).toDouble()),
+              child: Text('${valueNotifier.grab(context)}'),
             ),
             ...[
-              Text('${context.grab(notifier)}'),
+              Text('${valueNotifier.grab(context)}'),
             ],
           ],
         ),
@@ -78,21 +98,35 @@ class _MyStatelessWidget2 extends StatelessWidget {
   Widget build(BuildContext context) {
     // Either Grab or StatelessGrabMixin is necessary.
     // expect_lint: missing_grab_mixin
-    final count = context.grab(notifier);
+    final count = valueNotifier.grab(context);
+    // expect_lint: missing_grab_mixin
+    changeNotifier1.grab(context);
+    // expect_lint: missing_grab_mixin
+    changeNotifier2.grab(context);
+    // expect_lint: missing_grab_mixin
+    changeNotifier3.grab(context);
+    // expect_lint: missing_grab_mixin
+    textController.grab(context);
 
     // Works for grabAt() too.
     // expect_lint: missing_grab_mixin
-    context.grabAt(notifier, (int v) => v);
+    valueNotifier.grabAt(context, (v) => v);
+    // expect_lint: missing_grab_mixin
+    changeNotifier1.grabAt(context, (MyChangeNotifier1 n) => n.value);
+    // expect_lint: missing_grab_mixin
+    changeNotifier2.grabAt(context, (MyChangeNotifier2 n) => n.value);
+    // expect_lint: missing_grab_mixin
+    changeNotifier3.grabAt(context, (MyChangeNotifier3 n) => n.value);
 
     // Works for a call with cascade notation.
     // expect_lint: missing_grab_mixin
-    context..grab(notifier);
+    valueNotifier..grab(context);
 
     final ctx = context;
 
     // Works for a call using a name other than context.
     // expect_lint: missing_grab_mixin
-    ctx.grab(notifier);
+    valueNotifier.grab(ctx);
 
     return Center(
       child: Text('$count'),
@@ -107,7 +141,7 @@ class _MyStatelessWidget3 extends StatelessWidget with Grabful {
   @override
   Widget build(BuildContext context) {
     // expect_lint: missing_grab_mixin
-    final count = context.grab(notifier);
+    final count = valueNotifier.grab(context);
 
     return Center(
       child: Text('$count'),
@@ -126,7 +160,7 @@ class _MyStatefulWidget1State extends State<_MyStatefulWidget1> {
   @override
   Widget build(BuildContext context) {
     // expect_lint: missing_grab_mixin
-    final count = context.grab(notifier);
+    final count = valueNotifier.grab(context);
 
     return Center(
       child: Text('$count'),
@@ -146,7 +180,7 @@ class _MyStatefulWidget2State extends State<_MyStatefulWidget2> {
   @override
   Widget build(BuildContext context) {
     // expect_lint: missing_grab_mixin
-    final count = context.grab(notifier);
+    final count = valueNotifier.grab(context);
     _func(context);
 
     return Center(
@@ -156,7 +190,7 @@ class _MyStatefulWidget2State extends State<_MyStatefulWidget2> {
           Builder(
             builder: (context) {
               // expect_lint: avoid_grab_in_callback
-              context.grab(notifier);
+              valueNotifier.grab(context);
 
               return const SizedBox.shrink();
             },
@@ -168,6 +202,6 @@ class _MyStatefulWidget2State extends State<_MyStatefulWidget2> {
 
   void _func(BuildContext context) {
     // expect_lint: avoid_grab_outside_build
-    context.grab(notifier);
+    valueNotifier.grab(context);
   }
 }

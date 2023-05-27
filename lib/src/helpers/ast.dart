@@ -1,5 +1,6 @@
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/ast/visitor.dart';
+import 'package:analyzer/dart/element/element.dart';
 
 import 'utils.dart';
 
@@ -110,6 +111,23 @@ extension WithClauseExtension on WithClause {
 
 extension MethodInvocationExtension on MethodInvocation {
   bool get isGrabCall {
+    // TODO: Will be removed after most users start using grab >=0.4.0.
+    if (_isGrabCallOld) {
+      return true;
+    }
+
+    final receiverElement = realTarget?.staticType?.element;
+
+    return ['grab', 'grabAt'].contains(methodName.name) &&
+        receiverElement != null &&
+        receiverElement is ClassElement &&
+        receiverElement.allSupertypes.any(
+          (t) => t.getDisplayString(withNullability: false) == 'Listenable',
+        );
+  }
+
+  // TODO: For grab <0.4.0. Will be removed.
+  bool get _isGrabCallOld {
     final targetName =
         realTarget?.staticType?.getDisplayString(withNullability: false);
     final name = methodName.name;
