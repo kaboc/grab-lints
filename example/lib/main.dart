@@ -41,9 +41,9 @@ class App extends StatelessWidget with Grab {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        body: Column(
+        body: const Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
+          children: [
             _MyStatelessWidget1(),
             _MyStatelessWidget2(),
             _MyStatelessWidget3(),

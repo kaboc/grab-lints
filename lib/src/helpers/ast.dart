@@ -20,16 +20,12 @@ extension ClassDeclarationExtension on ClassDeclaration {
   String get _className => extendsClause?.superclass.name2.lexeme ?? '';
 
   ClassType get classType {
-    switch (_className) {
-      case 'StatelessWidget':
-        return ClassType.stateless;
-      case 'StatefulWidget':
-        return ClassType.stateful;
-      case 'State':
-        return ClassType.state;
-      default:
-        return ClassType.unknown;
-    }
+    return switch (_className) {
+      'StatelessWidget' => ClassType.stateless,
+      'StatefulWidget' => ClassType.stateful,
+      'State' => ClassType.state,
+      _ => ClassType.unknown,
+    };
   }
 
   // Unlike the getter with the same name in WithClause, this getter
