@@ -1,3 +1,8 @@
+## 0.3.0
+
+- Update dependencies.
+- Raise minimum Dart SDK version to 3.0.0.
+
 ## 0.2.0
 
 - Support grab 0.4.0.
@@ -12,7 +17,7 @@
 
 ## 0.1.0
 
-- Require Dart SDK 2.19.
+- Raise minimum Dart SDK version to 2.19.0.
 - Create almost all from scratch again due to breaking changes in custom_lint.
     - Improved rules:
         - avoid_grab_in_callback (previously grab_used_too_deep)
