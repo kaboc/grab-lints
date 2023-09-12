@@ -79,7 +79,9 @@ extension ClassDeclarationExtension on ClassDeclaration {
         parent?.visitChildren(visitor2);
 
         return visitor2.declarations.firstWhereOrNull(
-          (v) => v.name == expressions.first.constructorName.type.name2,
+          (v) =>
+              v.name.lexeme ==
+              expressions.first.constructorName.type.name2.lexeme,
         );
       }
     }
