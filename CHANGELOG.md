@@ -1,3 +1,8 @@
+## 0.3.1
+
+- Fix `unnecessary_grab_mixin` not working for StatefulWidget.
+- Improve tests.
+
 ## 0.3.0
 
 - Update dependencies.
