@@ -6,6 +6,7 @@ import 'src/lints/missing_grab_mixin.dart';
 import 'src/lints/unnecessary_grab_mixin.dart';
 import 'src/lints/wrong_grab_mixin.dart';
 
+/// The entrypoint of this plugin.
 PluginBase createPlugin() => _GrabLints();
 
 class _GrabLints extends PluginBase {

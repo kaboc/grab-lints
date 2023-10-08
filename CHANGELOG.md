@@ -1,3 +1,7 @@
+## 0.3.2
+
+- First release on pub.dev.
+
 ## 0.3.1
 
 - Fix `unnecessary_grab_mixin` not working for StatefulWidget.
