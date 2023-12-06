@@ -278,7 +278,7 @@ class _StatefulWidget4 extends StatefulWidget {
 class _StatefulWidget4State extends State<_StatefulWidget4> {
   @override
   Widget build(BuildContext context) {
-    // Either Grab or StatelessGrabMixin is necessary.
+    // Either Grabful or StatefulGrabMixin is necessary.
     // expect_lint: missing_grab_mixin
     final count = valueNotifier.grab(context);
     // expect_lint: missing_grab_mixin
