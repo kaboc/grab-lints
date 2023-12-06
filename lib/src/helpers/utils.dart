@@ -1,3 +1,9 @@
+import 'package:analyzer/dart/ast/ast.dart';
+import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/type.dart';
+
+import 'types.dart';
+
 enum ClassType {
   stateless,
   stateful,
@@ -27,5 +33,23 @@ extension FirstWhereOrNull<T> on Iterable<T> {
       for (final v in other)
         if (contains(v)) v,
     ];
+  }
+}
+
+extension ElementIsType on DartType? {
+  bool get isBuildContext {
+    final type = this;
+    return type != null && buildContextType.isExactlyType(type);
+  }
+}
+
+extension FormalParameterListExtension on FormalParameterList? {
+  ParameterElement? _findParameter({required String name}) {
+    return this?.parameterElements.firstWhereOrNull((elm) => elm?.name == name);
+  }
+
+  bool hasBuildContext({required String name}) {
+    final elm = _findParameter(name: name);
+    return elm != null && elm.type.isBuildContext;
   }
 }

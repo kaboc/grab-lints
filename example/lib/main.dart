@@ -83,16 +83,21 @@ class _StatelessWidget2 extends StatelessWidget with Grab {
     }
 
     int localFunc1() {
-      // expect_lint: avoid_grab_in_callback
+      // It is acceptable to using the BuildContext parameter
+      // in a local function.
       return valueNotifier.grab(context);
     }
 
     int localFunc2(BuildContext context) {
-      // expect_lint: avoid_grab_in_callback
+      // Warned if the BuildContext param is not directly used.
+      // expect_lint: maybe_wrong_build_context_for_grab
       return valueNotifier.grab(context);
     }
 
     final ctx = context;
+
+    // The BuildContext parameter of the build method should be used directly.
+    // expect_lint: maybe_wrong_build_context_for_grab
     valueNotifier.grab(ctx);
 
     return Center(
@@ -110,13 +115,16 @@ class _StatelessWidget2 extends StatelessWidget with Grab {
             ],
             Builder(
               builder: (_) {
-                // expect_lint: avoid_grab_in_callback
+                // It is acceptable to using the BuildContext parameter
+                // in a callback function.
+                // However, note that this causes a rebuild of the parent
+                // widget as well as this Builder.
                 return Text('${valueNotifier.grab(context)}');
               },
             ),
             Builder(
               builder: (context) {
-                // ignore: avoid_grab_in_callback
+                // expect_lint: maybe_wrong_build_context_for_grab
                 return Text('${valueNotifier.grab(context)}');
               },
             ),
@@ -124,7 +132,7 @@ class _StatelessWidget2 extends StatelessWidget with Grab {
               builder: (context2) {
                 final context = context2;
 
-                // ignore: avoid_grab_in_callback
+                // expect_lint: maybe_wrong_build_context_for_grab
                 return Text('${valueNotifier.grab(context)}');
               },
             ),
@@ -219,16 +227,21 @@ class _StatefulWidget2State extends State<_StatefulWidget2> {
     }
 
     int localFunc1() {
-      // expect_lint: avoid_grab_in_callback
+      // It is acceptable to using the BuildContext parameter
+      // in a local function.
       return valueNotifier.grab(context);
     }
 
     int localFunc2(BuildContext context) {
-      // expect_lint: avoid_grab_in_callback
+      // Warned if the BuildContext param is not directly used.
+      // expect_lint: maybe_wrong_build_context_for_grab
       return valueNotifier.grab(context);
     }
 
     final ctx = context;
+
+    // The BuildContext parameter of the build method should be used directly.
+    // expect_lint: maybe_wrong_build_context_for_grab
     valueNotifier.grab(ctx);
 
     return Center(
@@ -248,13 +261,16 @@ class _StatefulWidget2State extends State<_StatefulWidget2> {
             ],
             Builder(
               builder: (_) {
-                // expect_lint: avoid_grab_in_callback
+                // It is acceptable to using the BuildContext parameter
+                // in a callback function.
+                // However, note that this causes a rebuild of the parent
+                // widget as well as this Builder.
                 return Text('${valueNotifier.grab(context)}');
               },
             ),
             Builder(
               builder: (context) {
-                // expect_lint: avoid_grab_in_callback
+                // expect_lint: maybe_wrong_build_context_for_grab
                 return Text('${valueNotifier.grab(context)}');
               },
             ),
@@ -262,7 +278,7 @@ class _StatefulWidget2State extends State<_StatefulWidget2> {
               builder: (context2) {
                 final context = context2;
 
-                /// expect_lint: avoid_grab_in_callback
+                // expect_lint: maybe_wrong_build_context_for_grab
                 return Text('${valueNotifier.grab(context)}');
               },
             ),

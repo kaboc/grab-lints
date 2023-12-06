@@ -33,6 +33,17 @@ class _MethodInvocationVisitor extends RecursiveAstVisitor<void> {
   }
 }
 
+class _VariableDeclarationVisitor extends RecursiveAstVisitor<void> {
+  final _declarations = <VariableDeclaration>[];
+
+  List<VariableDeclaration> get declarations => _declarations;
+
+  @override
+  void visitVariableDeclaration(VariableDeclaration node) {
+    _declarations.add(node);
+  }
+}
+
 class _InstanceCreationExpressionVisitor extends RecursiveAstVisitor<void> {
   final _expressions = <InstanceCreationExpression>[];
 

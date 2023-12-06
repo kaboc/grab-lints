@@ -130,10 +130,6 @@ extension MethodInvocationExtension on MethodInvocation {
   bool get isInBuild {
     return thisOrAncestorOfType<MethodDeclaration>().isBuildMethod;
   }
-
-  bool get isInCallback {
-    return thisOrAncestorOfType<FunctionExpression>() != null;
-  }
 }
 
 extension MethodDeclarationExtension on MethodDeclaration? {
@@ -150,5 +146,28 @@ extension MethodDeclarationExtension on MethodDeclaration? {
         elm.name == 'build' &&
         elm.parameters.length == 1 &&
         buildContextType.isExactlyType(elm.parameters.first.type);
+  }
+}
+
+extension FunctionExpressionExtension on FunctionExpression {
+  VariableDeclaration? findVariableDeclaration({
+    required String name,
+    required int offsetBefore,
+  }) {
+    final visitor = _VariableDeclarationVisitor();
+    visitChildren(visitor);
+
+    for (final decl in visitor.declarations) {
+      if (decl.offset > offsetBefore) {
+        return null;
+      }
+
+      final elm = decl.declaredElement;
+      final elmType = elm?.type;
+      if (elmType.isBuildContext && elm?.name == name) {
+        return decl;
+      }
+    }
+    return null;
   }
 }
