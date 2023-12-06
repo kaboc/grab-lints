@@ -22,13 +22,9 @@ class FixGrabMixin extends DartFix {
         return;
       }
 
-      final widgetDeclaration = node.parent as ClassDeclaration?;
-      final classType = widgetDeclaration?.classType;
-      if (classType == null || classType.isUnknown || classType.isState) {
-        return;
-      }
+      final widgetDecl = analysisError.data! as ClassDeclaration;
 
-      final fixes = classType.isStateless
+      final fixes = widgetDecl.classType.isStateless
           ? {
               'Grabful': 'Grab',
               'StatefulGrabMixin': 'StatelessGrabMixin',
@@ -47,7 +43,7 @@ class FixGrabMixin extends DartFix {
               priority: 90,
             )
             .updateMixin(
-              widgetDeclaration: widgetDeclaration!,
+              widgetDeclaration: widgetDecl,
               withClause: node,
               mixinName: fixes[name]!,
             );

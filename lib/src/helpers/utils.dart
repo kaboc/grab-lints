@@ -8,6 +8,8 @@ enum ClassType {
   bool get isStateful => this == ClassType.stateful;
   bool get isState => this == ClassType.state;
   bool get isUnknown => this == ClassType.unknown;
+
+  bool get hasBuildMethod => isStateless || isState;
 }
 
 extension FirstWhereOrNull<T> on Iterable<T> {
@@ -23,7 +25,7 @@ extension FirstWhereOrNull<T> on Iterable<T> {
   Iterable<T> intersects(List<T> other) {
     return [
       for (final v in other)
-        if (contains(v)) v
+        if (contains(v)) v,
     ];
   }
 }

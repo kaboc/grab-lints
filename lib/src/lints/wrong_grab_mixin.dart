@@ -20,16 +20,16 @@ class WrongGrabMixin extends DartLintRule {
     CustomLintContext context,
   ) {
     context.registry.addWithClause((node) {
-      final widgetDeclaration = node.parent;
-      if (widgetDeclaration is! ClassDeclaration) {
+      final widgetDecl = node.parent;
+      if (widgetDecl is! ClassDeclaration) {
         return;
       }
 
-      final classType = widgetDeclaration.classType;
+      final classType = widgetDecl.classType;
 
-      if (classType.isStateless && widgetDeclaration.hasStatefulMixin ||
-          classType.isStateful && widgetDeclaration.hasStatelessMixin) {
-        reporter.reportErrorForNode(code, node);
+      if (classType.isStateless && widgetDecl.hasStatefulGrabMixin ||
+          classType.isStateful && widgetDecl.hasStatelessGrabMixin) {
+        reporter.reportErrorForNode(code, node, null, null, widgetDecl);
       }
     });
   }

@@ -21,22 +21,23 @@ class UnnecessaryGrabMixin extends DartLintRule {
     CustomLintContext context,
   ) {
     context.registry.addWithClause((node) {
-      final widgetDeclaration = node.parent;
-      if (widgetDeclaration is! ClassDeclaration) {
+      final widgetDecl = node.parent;
+      if (widgetDecl is! ClassDeclaration) {
         return;
       }
 
-      if (!widgetDeclaration.hasStatelessMixin &&
-          !widgetDeclaration.hasStatefulMixin) {
+      final classType = widgetDecl.classType;
+      if (!widgetDecl.hasGrabMixin ||
+          !classType.isStateless && !classType.isStateful) {
         return;
       }
 
-      final hasGrabCall = widgetDeclaration.classType.isStateless
-          ? widgetDeclaration.hasGrabCall
-          : widgetDeclaration.findStateClass()?.hasGrabCall;
+      final hasGrabCall = classType.isStateless
+          ? widgetDecl.hasGrabCall
+          : widgetDecl.findStateClass().hasGrabCall;
 
       if (hasGrabCall == false) {
-        reporter.reportErrorForNode(code, node);
+        reporter.reportErrorForNode(code, node, null, null, widgetDecl);
       }
     });
   }

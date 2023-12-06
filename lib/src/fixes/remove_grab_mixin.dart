@@ -22,14 +22,10 @@ class RemoveGrabMixin extends DartFix {
         return;
       }
 
-      final widgetDeclaration = node.parent as ClassDeclaration?;
-      final classType = widgetDeclaration?.classType;
-      if (classType == null || classType.isUnknown || classType.isState) {
-        return;
-      }
+      final widgetDecl = analysisError.data! as ClassDeclaration;
 
       final targetNames = node.mixinNames.intersects(
-        classType.isStateless
+        widgetDecl.classType.isStateless
             ? ['StatelessGrabMixin', 'Grab']
             : ['StatefulGrabMixin', 'Grabful'],
       );
@@ -41,7 +37,7 @@ class RemoveGrabMixin extends DartFix {
               priority: 90,
             )
             .removeMixins(
-              widgetDeclaration: widgetDeclaration!,
+              widgetDeclaration: widgetDecl,
               withClause: node,
               targetMixinNames: targetNames.toList(),
             );

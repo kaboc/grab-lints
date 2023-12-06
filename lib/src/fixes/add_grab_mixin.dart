@@ -22,25 +22,14 @@ class AddGrabMixin extends DartFix {
         return;
       }
 
-      final classDeclaration = node.thisOrAncestorOfType<ClassDeclaration>();
-      final classType = classDeclaration?.classType;
-      if (classType == null || classType.isUnknown || classType.isStateful) {
-        return;
-      }
+      final widgetDecl = analysisError.data! as ClassDeclaration;
 
-      final widgetDeclaration = classType.isStateless
-          ? classDeclaration
-          : classDeclaration?.findStatelessWidget();
-      if (widgetDeclaration == null) {
-        return;
-      }
-
-      final withClauses = widgetDeclaration.findWithClauses();
+      final withClauses = widgetDecl.findWithClauses();
       final withClause = withClauses.firstWhereOrNull(
-        (v) => v.sourceRange.intersects(widgetDeclaration.sourceRange),
+        (v) => v.sourceRange.intersects(widgetDecl.sourceRange),
       );
 
-      final newMixinNames = classType.isStateless
+      final newMixinNames = widgetDecl.classType.isStateless
           ? ['Grab', 'StatelessGrabMixin']
           : ['Grabful', 'StatefulGrabMixin'];
 
@@ -51,7 +40,7 @@ class AddGrabMixin extends DartFix {
               priority: 90,
             )
             .updateMixin(
-              widgetDeclaration: widgetDeclaration,
+              widgetDeclaration: widgetDecl,
               withClause: withClause,
               mixinName: name,
             );

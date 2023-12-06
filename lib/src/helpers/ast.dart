@@ -2,22 +2,19 @@ import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/ast/visitor.dart';
 import 'package:analyzer/dart/element/element.dart';
 
+import 'types.dart';
 import 'utils.dart';
 
 part 'visitors.dart';
 
 extension NullableClassDeclarationExtension on ClassDeclaration? {
-  bool get hasStatelessMixin {
-    return this?.mixinNames.contains('StatelessGrabMixin') ?? false;
-  }
-
-  bool get hasStatefulMixin {
-    return this?.mixinNames.contains('StatefulGrabMixin') ?? false;
-  }
+  bool get hasStatelessGrabMixin => mixinNames.contains('StatelessGrabMixin');
+  bool get hasStatefulGrabMixin => mixinNames.contains('StatefulGrabMixin');
+  bool get hasGrabMixin => hasStatelessGrabMixin || hasStatefulGrabMixin;
 }
 
-extension ClassDeclarationExtension on ClassDeclaration {
-  String get _className => extendsClause?.superclass.name2.lexeme ?? '';
+extension ClassDeclarationExtension on ClassDeclaration? {
+  String get _className => this?.extendsClause?.superclass.name2.lexeme ?? '';
 
   ClassType get classType {
     return switch (_className) {
@@ -31,7 +28,7 @@ extension ClassDeclarationExtension on ClassDeclaration {
   // Unlike the getter with the same name in WithClause, this getter
   // returns original type names when the with clause has their aliases.
   List<String> get mixinNames {
-    final mixins = declaredElement?.mixins ?? [];
+    final mixins = this?.declaredElement?.mixins ?? [];
 
     return [
       for (final mixin in mixins)
@@ -40,13 +37,12 @@ extension ClassDeclarationExtension on ClassDeclaration {
   }
 
   bool get hasGrabCall {
-    final methodInvocations = findMethodInvocations();
-    return methodInvocations.any((v) => v.isGrabCall);
+    return findMethodInvocations().any((v) => v.isGrabCall);
   }
 
   // This needs to be called on a declaration of a state class.
   ClassDeclaration? findStatelessWidget() {
-    final superclass = extendsClause?.superclass;
+    final superclass = this?.extendsClause?.superclass;
     final typeArgs = superclass?.typeArguments?.arguments;
     if (typeArgs == null) {
       return null;
@@ -56,7 +52,7 @@ extension ClassDeclarationExtension on ClassDeclaration {
         typeArgs.first.type?.getDisplayString(withNullability: false);
 
     final visitor = _ClassDeclarationVisitor();
-    parent?.visitChildren(visitor);
+    this?.parent?.visitChildren(visitor);
 
     return visitor.declarations
         .firstWhereOrNull((v) => v.name.lexeme == widgetName);
@@ -64,9 +60,9 @@ extension ClassDeclarationExtension on ClassDeclaration {
 
   // This needs to be called on a declaration of a StatefulWidget class.
   ClassDeclaration? findStateClass() {
+    final members = this?.members ?? <ClassMember>[];
     for (final member in members) {
-      final element = member.declaredElement;
-      if (element?.name == 'createState') {
+      if (member.declaredElement?.name == 'createState') {
         final visitor1 = _InstanceCreationExpressionVisitor();
         member.visitChildren(visitor1);
 
@@ -76,7 +72,7 @@ extension ClassDeclarationExtension on ClassDeclaration {
         }
 
         final visitor2 = _ClassDeclarationVisitor();
-        parent?.visitChildren(visitor2);
+        this?.parent?.visitChildren(visitor2);
 
         return visitor2.declarations.firstWhereOrNull(
           (v) =>
@@ -90,13 +86,13 @@ extension ClassDeclarationExtension on ClassDeclaration {
 
   List<WithClause> findWithClauses() {
     final visitor = _WithClauseVisitor();
-    visitChildren(visitor);
+    this?.visitChildren(visitor);
     return visitor.clauses;
   }
 
   List<MethodInvocation> findMethodInvocations() {
     final visitor = _MethodInvocationVisitor();
-    visitChildren(visitor);
+    this?.visitChildren(visitor);
     return visitor.invocations;
   }
 }
@@ -114,14 +110,12 @@ extension MethodInvocationExtension on MethodInvocation {
       return true;
     }
 
-    final receiverElement = realTarget?.staticType?.element;
+    final receiverElm = realTarget?.staticType?.element;
 
     return ['grab', 'grabAt'].contains(methodName.name) &&
-        receiverElement != null &&
-        receiverElement is ClassElement &&
-        receiverElement.allSupertypes.any(
-          (t) => t.getDisplayString(withNullability: false) == 'Listenable',
-        );
+        receiverElm != null &&
+        receiverElm is ClassElement &&
+        receiverElm.allSupertypes.any((t) => listenableType.isExactlyType(t));
   }
 
   // TODO: For grab <0.4.0. Will be removed.
@@ -134,14 +128,27 @@ extension MethodInvocationExtension on MethodInvocation {
   }
 
   bool get isInBuild {
-    final signature = thisOrAncestorOfType<MethodDeclaration>()
-        ?.declaredElement
-        ?.getDisplayString(withNullability: false);
-
-    return signature == 'Widget build(BuildContext context)';
+    return thisOrAncestorOfType<MethodDeclaration>().isBuildMethod;
   }
 
   bool get isInCallback {
     return thisOrAncestorOfType<FunctionExpression>() != null;
+  }
+}
+
+extension MethodDeclarationExtension on MethodDeclaration? {
+  bool get isBuildMethod {
+    final classDecl = this?.thisOrAncestorOfType<ClassDeclaration>();
+    final elm = this?.declaredElement;
+
+    final isClassWithBuild =
+        classDecl != null && classDecl.classType.hasBuildMethod;
+
+    return isClassWithBuild &&
+        elm != null &&
+        widgetType.isExactlyType(elm.returnType) &&
+        elm.name == 'build' &&
+        elm.parameters.length == 1 &&
+        buildContextType.isExactlyType(elm.parameters.first.type);
   }
 }

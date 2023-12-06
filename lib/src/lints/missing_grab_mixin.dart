@@ -20,23 +20,19 @@ class MissingGrabMixin extends DartLintRule {
     CustomLintContext context,
   ) {
     context.registry.addMethodInvocation((node) {
-      if (!node.isGrabCall || !node.isInBuild || node.isInCallback) {
+      if (!node.isGrabCall || !node.isInBuild) {
         return;
       }
 
-      final classDeclaration = node.thisOrAncestorOfType<ClassDeclaration>();
-      final classType = classDeclaration?.classType;
-      if (classType == null || classType.isUnknown || classType.isStateful) {
-        return;
-      }
+      final classDecl = node.thisOrAncestorOfType<ClassDeclaration>();
+      final classType = classDecl.classType;
 
-      final widgetDeclaration = classType.isStateless
-          ? classDeclaration
-          : classDeclaration?.findStatelessWidget();
+      final widgetDecl =
+          classType.isStateless ? classDecl : classDecl.findStatelessWidget();
 
-      if (classType.isStateless && !widgetDeclaration.hasStatelessMixin ||
-          classType.isState && !widgetDeclaration.hasStatefulMixin) {
-        reporter.reportErrorForNode(code, node);
+      if (classType.isStateless && !widgetDecl.hasStatelessGrabMixin ||
+          classType.isState && !widgetDecl.hasStatefulGrabMixin) {
+        reporter.reportErrorForNode(code, node, null, null, widgetDecl);
       }
     });
   }
