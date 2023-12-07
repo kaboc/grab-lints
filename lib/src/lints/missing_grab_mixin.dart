@@ -1,4 +1,5 @@
 import 'package:analyzer/dart/ast/ast.dart';
+import 'package:analyzer/error/error.dart';
 import 'package:analyzer/error/listener.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 
@@ -11,6 +12,7 @@ class MissingGrabMixin extends DartLintRule {
   static const _code = LintCode(
     name: 'missing_grab_mixin',
     problemMessage: 'Grab mixin is necessary to use Grab extension methods.',
+    errorSeverity: ErrorSeverity.ERROR,
   );
 
   @override

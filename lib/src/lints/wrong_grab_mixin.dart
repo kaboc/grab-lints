@@ -1,4 +1,5 @@
 import 'package:analyzer/dart/ast/ast.dart';
+import 'package:analyzer/error/error.dart';
 import 'package:analyzer/error/listener.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 
@@ -11,6 +12,7 @@ class WrongGrabMixin extends DartLintRule {
   static const _code = LintCode(
     name: 'wrong_grab_mixin',
     problemMessage: 'This Grab mixin does not match the widget type.',
+    errorSeverity: ErrorSeverity.ERROR,
   );
 
   @override

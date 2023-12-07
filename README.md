@@ -4,6 +4,8 @@ Lint rules to help avoid common misuse of [Grab].
 
 A quick fix is available in some rules.
 
+### Errors
+
 <table>
 <tr>
 <th>Rule</th><th>Fix</th><th>Details</th>
@@ -21,6 +23,14 @@ A necessary Grab mixin is missing in the <code>with</code> clause.
 <td>
 The widget class has a mismatching Grab mixin in the <code>with</code> clause.
 </td>
+</tr>
+</table>
+
+### Warnings
+
+<table>
+<tr>
+<th>Rule</th><th>Fix</th><th>Details</th>
 </tr>
 <tr>
 <th style="text-align: left">unnecessary_grab_mixin</th>
