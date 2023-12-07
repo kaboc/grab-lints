@@ -1,3 +1,10 @@
+## 0.4.0
+
+- Add `maybe_wrong_build_context_for_grab`.
+- Remove `avoid_grab_in_callback` in favour of `maybe_wrong_build_context_for_grab`.
+- Use custom_lint_builder 0.5.7.
+- Refactoring.
+
 ## 0.3.2
 
 - First release on pub.dev.

@@ -1,8 +1,28 @@
-Lint rules to help avoid common misuse of [Grab].
+Lint rules to warn you about common misuse of [Grab] and fix it quickly.
 
-## Available lint rules
+## Setup
 
-A quick fix is available in some rules.
+This plugin uses [custom_lint](https://pub.dev/packages/custom_lint).
+
+### pubspec.yaml
+
+Put the latest version in place of `x.x.x` below.
+
+```yaml
+dev_dependencies:
+  custom_lint:
+  grab_lints: x.x.x
+```
+
+### analysis_options.yaml
+
+```yaml
+analyzer:
+  plugins:
+    - custom_lint
+```
+
+## Available lints
 
 ### Errors
 
@@ -66,28 +86,6 @@ leads to misuse or confusion.
 </td>
 </tr>
 </table>
-
-## Setup
-
-This plugin uses [custom_lint](https://pub.dev/packages/custom_lint).
-
-### pubspec.yaml
-
-Put the latest version in place of `x.x.x` below.
-
-```yaml
-dev_dependencies:
-  custom_lint:
-  grab_lints:
-```
-
-### analysis_options.yaml
-
-```yaml
-analyzer:
-  plugins:
-    - custom_lint
-```
 
 <!-- Links -->
 
