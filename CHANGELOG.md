@@ -1,3 +1,9 @@
+## 0.4.1
+
+- Add a note about incompatibility with the latest grab version.
+    - This package is no longer necessary for newer versions of grab (1.0.0-dev.1 and above).
+- Bump custom_lint_builder version to 0.5.8.
+
 ## 0.4.0
 
 - Add `maybe_wrong_build_context_for_grab`.

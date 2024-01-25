@@ -1,6 +1,6 @@
 name: grab_lints
 description: Lint rules to warn you about common misuse of Grab and fix it quickly.
-version: 0.4.0
+version: 0.4.1
 repository: https://github.com/kaboc/grab-lints
 
 environment:
@@ -8,7 +8,7 @@ environment:
 
 dependencies:
   analyzer: ^6.2.0
-  custom_lint_builder: ^0.5.7
+  custom_lint_builder: ^0.5.8
 
 dev_dependencies:
   lints: ^3.0.0
