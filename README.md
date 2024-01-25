@@ -1,5 +1,9 @@
 Lint rules to warn you about common misuse of [Grab] and fix it quickly.
 
+**This package is incompatible with grab 1.0.0-dev.1 and above.\
+grab_lints is no longer necessary to avoid misuse related to the limitations
+that existed in older versions of grab.**
+
 ## Setup
 
 This plugin uses [custom_lint](https://pub.dev/packages/custom_lint).
